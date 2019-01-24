@@ -1,0 +1,3 @@
+rootProject.name = 'carbon8'
+
+include ':app'
