@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 
@@ -6,27 +6,6 @@ import { actionCreators, selectors } from "../ClientStore";
 
 const { authenticated } = actionCreators;
 const { getIsAuthenticated } = selectors;
-
-class Test extends Component {
-
-  fireReduxAction() {
-    this.props.authenticated();
-  }
-
-  render() {
-    const { isAuthenticated } = this.props;
-
-    return (
-      <View style={styles.container}>
-        <Text>Welcome to Carbon8! {isAuthenticated}</Text>
-        <Button
-          onPress={this.fireReduxAction.bind(this)}
-          title="Fire Redux Action"
-        />
-      </View>
-    );
-  }
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -37,6 +16,41 @@ const styles = StyleSheet.create({
   }
 });
 
+class HomeScreen extends Component {
+
+  static navigationOptions = {
+    title: 'Carbon8',
+    headerStyle: {
+      backgroundColor: '#f4511e',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  };
+
+  fireReduxAction() {
+    this.props.authenticated();
+  }
+
+  render() {
+    const { isAuthenticated } = this.props;
+
+    return (
+      <View style={styles.container}>
+        <Button
+          onPress={this.fireReduxAction.bind(this)}
+          title="Fire Redux Action"
+        />
+        <Button
+          title="Go to Details"
+          onPress={() => this.props.navigation.navigate('Details')}
+        />
+      </View>
+    );
+  }
+}
+
 function mapStateToProps(state, ownProps) {
   return {
     ...ownProps,
@@ -44,4 +58,4 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-export default connect(mapStateToProps, { authenticated })(Test);
+export default connect(mapStateToProps, { authenticated })(HomeScreen);
