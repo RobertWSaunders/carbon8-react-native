@@ -3,23 +3,41 @@ import { actionTypes } from "./ClientActions";
 export const reducerMount = "client";
 
 const initialState = {
-  isAuthenticated: false,
+  authenticated: false,
 
   user: null,
 
+  scanCode: null,
+
+  appSessionId: null,
+
   serverSocketConnected: false,
+
+  test: ""
 };
 
 export const selectors = {
-  getIsAuthenticated: (state) => state[reducerMount].isAuthenticated,
+  getAuthenticated: (state) => state[reducerMount].authenticated,
 
   getUser: (state) => state[reducerMount].user,
 
+  getScanCode: (state) =>  state[reducerMount].scanCode,
+
   getServerSocketConnected: (state) =>
     state[reducerMount].serverSocketConnected,
+
+  getTest: (state) => state[reducerMount].test
 };
 
 const handlers = {
+  [actionTypes.MOBILE_TEST]: (state, action) => {
+    const { test } = action.data;
+
+    return {
+      ...state,
+      test
+    }
+  },
   [actionTypes.SET_USER]: (state, action) => {
     const { user } = action.data;
 
@@ -28,16 +46,21 @@ const handlers = {
       user
     };
   },
-  [actionTypes.AUTHENTICATED]: (state) => {
+  [actionTypes.AUTHENTICATE]: (state, action) => {
+    const { scanCode, appSessionId, user } = action.data.authInfo;
+
     return {
       ...state,
-      isAuthenticated: true
+      user,
+      scanCode,
+      appSessionId,
+      authenticated: true
     };
   },
-  [actionTypes.UNAUTHENTICATED]: (state) => {
+  [actionTypes.UNAUTHENTICATE]: (state) => {
     return {
       ...state,
-      isAuthenticated: false
+      authenticated: false
     };
   },
   [actionTypes.SERVER_SOCKET_CONNECTED]: (state) => {

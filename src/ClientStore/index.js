@@ -7,7 +7,6 @@ import createSocketMiddleware from "./ClientSocketMiddleware";
 import { reducer, reducerMount } from "./ClientReducer";
 import { AsyncStorage } from "react-native";
 
-
 const IS_PROD = process.env.NODE_ENV === "production";
 
 const SERVER_SOCKET_URI =

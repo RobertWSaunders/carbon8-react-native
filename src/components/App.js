@@ -1,11 +1,11 @@
 import { createSwitchNavigator, createStackNavigator, createBottomTabNavigator, createAppContainer } from "react-navigation";
 
-import AuthLoadingScreen from "./AuthLoadingScreen";
-import AccountScreen from "./AccountScreen";
-import SignupScreen from "./SignupScreen";
-import LoginScreen from "./LoginScreen";
-import HomeScreen from "./HomeScreen";
-import MapScreen from "./MapScreen";
+import AuthLoadingScreen from "./AuthStack/AuthLoadingScreen";
+import AccountScreen from "./AppStack/AccountScreen";
+import SignupScreen from "./AuthStack/SignupScreen";
+import LoginScreen from "./AuthStack/LoginScreen";
+import HomeScreen from "./AppStack/HomeScreen";
+import MapScreen from "./AppStack/MapScreen";
 
 const AuthStack = createStackNavigator(
   {
@@ -37,6 +37,9 @@ const AppStack = createBottomTabNavigator(
     Map: MapStack,
     Home: HomeStack,
     Account: AccountStack
+  },
+  {
+    initialRouteName: 'Home',
   }
 );
 

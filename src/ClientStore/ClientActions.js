@@ -1,6 +1,6 @@
 const clientActionTypes = {
-  AUTHENTICATED: "@@/client/AUTHENTICATED",
-  UNAUTHENTICATED: "@@/client/UNAUTHENTICATED",
+  AUTHENTICATE: "@@/client/AUTHENTICATE",
+  UNAUTHENTICATE: "@@/client/UNAUTHENTICATE",
 
   SET_USER: "@@/client/SET_USER"
 };
@@ -12,15 +12,17 @@ const serverSocketMiddlewareActionTypes = {
 
   // Actions
 
+  TRIGGER_SERVER_CONNECTION: "@@/client/server/socket/TRIGGER_CONNECTION",
+
   AUTHENTICATE_FOUNTAIN: "@@/client/server/socket/AUTHENTICATE_FOUNTAIN",
 
   // Events
 
-  TRIGGER_SERVER_CONNECTION: "@@/client/server/socket/TRIGGER_CONNECTION"
+  MOBILE_TEST: "@@/client/server/socket/MOBILE_TEST"
 };
 
 export const serverSocketEventActionMap = {
-  ["TEST"]: serverSocketMiddlewareActionTypes.SOCKET_TEST
+  ["TEST"]: serverSocketMiddlewareActionTypes.MOBILE_TEST
 };
 
 export const actionTypes = {
@@ -29,8 +31,8 @@ export const actionTypes = {
 };
 
 const clientActionCreators = {
-  authenticated: () => ({ type: actionTypes.AUTHENTICATED }),
-  unauthenticated: () => ({ type: actionTypes.UNAUTHENTICATED}),
+  authenticate: (authInfo) => ({ type: actionTypes.AUTHENTICATE, data: { authInfo }}),
+  unauthenticate: () => ({ type: actionTypes.UNAUTHENTICATE }),
 
   setUser: (user) => ({ type: actionTypes.SET_USER, data: { user } })
 };
