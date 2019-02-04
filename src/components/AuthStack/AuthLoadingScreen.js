@@ -17,7 +17,7 @@ class AuthLoadingScreen extends Component {
 
   async bootstrapApplication() {
     try {
-      await AsyncStorage.setItem(APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiNTk0YzNiYy0yNmU5LTRhZGUtOGZkNC1iNTc2NTMyMDc1YzYiLCJhcHBTZXNzaW9uSWQiOiJPUFBaIiwiaWF0IjoxNTQ4ODI3MzkwLCJleHAiOjE1NDg4Mjc2OTAsImlzcyI6IkNhcmJvbjgifQ.hTD6SeeLpan0uOvedeoTL-qpGwzf9grGc6TmhwM8BXY");
+      await AsyncStorage.setItem(APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiNTk0YzNiYy0yNmU5LTRhZGUtOGZkNC1iNTc2NTMyMDc1YzYiLCJhcHBTZXNzaW9uSWQiOiJDOVVBIiwiaWF0IjoxNTQ5MzE0NzE5LCJleHAiOjE1NDkzMTUwMTksImlzcyI6IkNhcmJvbjgifQ.xwYuw8aA67LE26_VozI61KlWs2PJxci4mbUqZiDMHN8");
 
       const oldAccessToken = await AsyncStorage.getItem(APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
