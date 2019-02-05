@@ -12,7 +12,8 @@ const serverSocketMiddlewareActionTypes = {
 
   // Actions
 
-  TRIGGER_SERVER_CONNECTION: "@@/client/server/socket/TRIGGER_CONNECTION",
+  TRIGGER_SERVER_CONNECTION: "@@/client/server/socket/TRIGGER_SERVER_CONNECTION",
+  TRIGGER_SERVER_DISCONNECTION: "@@/client/server/socket/TRIGGER_SERVER_DISCONNECTION",
 
   AUTHENTICATE_FOUNTAIN: "@@/client/server/socket/AUTHENTICATE_FOUNTAIN",
 
@@ -40,6 +41,9 @@ const clientActionCreators = {
 const invokeServerSocketActionCreators = {
   triggerServerConnection: () => ({
     type: actionTypes.TRIGGER_SERVER_CONNECTION
+  }),
+  triggerServerDisconnection: () => ({
+    type: actionTypes.TRIGGER_SERVER_DISCONNECTION
   })
 };
 

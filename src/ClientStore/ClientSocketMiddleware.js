@@ -80,7 +80,13 @@ class ClientSocketMiddleware {
       return this.createSocketConnection();
     }
 
-    this.socket.emit(this.getSocketActionFromReduxAction(action));
+    const socketAction = this.getSocketActionFromReduxAction(action)
+    
+    if (socketAction === "TRIGGER_SERVER_DISCONNECTION") {
+      this.socket.disconnect();
+    } else {
+      this.socket.emit(socketAction);
+    }
   }
 
   socketMiddleware() {

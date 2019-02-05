@@ -59,8 +59,7 @@ const handlers = {
   },
   [actionTypes.UNAUTHENTICATE]: (state) => {
     return {
-      ...state,
-      authenticated: false
+      ...initialState
     };
   },
   [actionTypes.SERVER_SOCKET_CONNECTED]: (state) => {
