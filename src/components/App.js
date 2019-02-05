@@ -11,6 +11,7 @@ import {
 import AuthLoadingScreen from "./AuthStack/AuthLoadingScreen";
 import AccountScreen from "./TabStack/AccountScreen";
 import SignupScreen from "./AuthStack/SignupScreen";
+import ResetScreen from "./AuthStack/ResetScreen";
 import LoginScreen from "./AuthStack/LoginScreen";
 import HomeScreen from "./TabStack/HomeScreen";
 import MapScreen from "./TabStack/MapScreen";
@@ -19,7 +20,11 @@ import ScanModal from "./Modal/ScanModal";
 const AuthStack = createStackNavigator(
   {
     Signup: SignupScreen,
-    Login: LoginScreen
+    Login: LoginScreen,
+    Reset: ResetScreen
+  },
+  {
+    initialRouteName: "Login",
   }
 )
 
@@ -84,7 +89,7 @@ const TabStack = createBottomTabNavigator(
     Account: AccountStack
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: "Home",
     tabBarOptions: {
       activeTintColor: "#000",
       inactiveTintColor: "#4a4a4a",
@@ -113,6 +118,6 @@ export default createAppContainer(createSwitchNavigator(
     Auth: AuthStack,
   },
   {
-    initialRouteName: 'AuthLoading'
+    initialRouteName: "AuthLoading"
   }
 ));

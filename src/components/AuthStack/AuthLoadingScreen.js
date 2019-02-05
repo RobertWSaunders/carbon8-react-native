@@ -72,7 +72,7 @@ class AuthLoadingScreen extends Component {
             height: 46,
             resizeMode: "contain",
             marginBottom: 20
-          }} 
+          }}
         />
         <ActivityIndicator size="small" color="#000" />
       </View>

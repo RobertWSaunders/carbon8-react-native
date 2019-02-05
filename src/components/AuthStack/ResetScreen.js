@@ -9,14 +9,14 @@ const styles = StyleSheet.create({
   }
 });
 
-class SignupScreen extends Component {
+class ResetScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Signup</Text>
+        <Text>Reset</Text>
       </View>
     )
   }
 }
 
-export default SignupScreen;
+export default ResetScreen;
