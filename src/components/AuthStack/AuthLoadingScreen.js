@@ -1,4 +1,4 @@
-import { Text, View, Image, ActivityIndicator, AsyncStorage } from "react-native";
+import { View, Image, ActivityIndicator, AsyncStorage } from "react-native";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
@@ -17,8 +17,6 @@ class AuthLoadingScreen extends Component {
 
   async bootstrapApplication() {
     try {
-      await AsyncStorage.setItem(APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiNTk0YzNiYy0yNmU5LTRhZGUtOGZkNC1iNTc2NTMyMDc1YzYiLCJhcHBTZXNzaW9uSWQiOiJDOVVBIiwiaWF0IjoxNTQ5MzE0NzE5LCJleHAiOjE1NDkzMTUwMTksImlzcyI6IkNhcmJvbjgifQ.xwYuw8aA67LE26_VozI61KlWs2PJxci4mbUqZiDMHN8");
-
       const oldAccessToken = await AsyncStorage.getItem(APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
       if (oldAccessToken === null) {
@@ -43,8 +41,6 @@ class AuthLoadingScreen extends Component {
 
       this.props.triggerServerConnection();
     } catch(err) {
-      console.log(err.response);
-
       setTimeout(() => {
         this.props.navigation.navigate('Auth');
       }, 800);

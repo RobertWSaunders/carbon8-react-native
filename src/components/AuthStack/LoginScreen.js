@@ -1,7 +1,14 @@
-import { KeyboardAvoidingView, StyleSheet, Text, View, Image } from "react-native";
+import { KeyboardAvoidingView, StyleSheet, Text, View, Image, AsyncStorage } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Input, Button } from 'react-native-elements';
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import axios from "axios";
+
+import { selectors, actionCreators, APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY } from "../../ClientStore";
+
+const { getServerSocketConnected, getAuthenticated } = selectors;
+const { triggerServerConnection, authenticate } = actionCreators;
 
 const styles = StyleSheet.create({
   container: {
@@ -16,10 +23,122 @@ class LoginScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       header: null
-      }
+    }
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loginLoading: false,
+      loginButtonDisabled: false,
+
+      signupButtonDisabled: false,
+
+      resetButtonDisabled: false,
+
+      formEmailAddress: "",
+      formEmailAddressEditable: true,
+      formEmailAddressErrorMessage: "",
+
+      formPassword: "",
+      formPasswordEditable: true,
+      formPasswordErrorMessage: "",
+
+      formErrorMessage: ""
+    };
+  }
+
+  startLoginHandling() {
+    this.setState({
+      loginLoading: true,
+      loginButtonDisabled: true,
+      signupButtonDisabled: true,
+      resetButtonDisabled: true,
+      formEmailAddressEditable: false,
+      formPasswordEditable: false
+    });
+  }
+
+  stopLoginHandling(formErrorMessage) {
+    this.setState({
+      loginLoading: false,
+      loginButtonDisabled: false,
+      signupButtonDisabled: false,
+      resetButtonDisabled: false,
+      formEmailAddressEditable: true,
+      formPasswordEditable: true,
+      formErrorMessage
+    });
+  }
+
+  stopValidatingInputs(passwordMsg, emailMsg) {
+    this.setState({
+      formPasswordErrorMessage: passwordMsg,
+      formEmailAddressErrorMessage: emailMsg
+    });
+  }
+
+  async handleLogin() {
+    this.startLoginHandling();
+
+    if(!this.validateFormFields()) {
+      return this.stopLoginHandling();
+    };
+
+    const { formEmailAddress, formPassword } = this.state;
+
+    try {
+      const res = await axios.post("http://localhost:3001/auth/session", {
+        email: formEmailAddress,
+        password: formPassword
+      });
+
+      const { user, appSessionId, scanCode, appAccessToken } = res.data;
+
+      this.props.authenticate({
+        user,
+        scanCode,
+        appSessionId
+      });
+
+      await AsyncStorage.setItem(APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY, appAccessToken);
+
+      this.props.triggerServerConnection();
+
+      this.stopLoginHandling();
+    } catch(err) {
+      console.log(err.response);
+    }
+  }
+
+  validateFormFields() {
+    const { formEmailAddress, formPassword } = this.state;
+
+    let status = true;
+    const messages = {
+      passwordMsg: "",
+      emailMsg: ""
+    };    
+
+    if (formPassword.length === 0) {
+      status = false;
+      messages.passwordMsg = "Please enter a password."
     }
 
+    if (!/^.+@.+$/.test(formEmailAddress)) {
+      status = false;
+      messages.emailMsg = "Please enter a valid email."
+    }
+
+    this.stopValidatingInputs(messages.passwordMsg, messages.emailMsg)
+
+    return status;
+  }
+
   renderLogoContainer() {
+    const { formErrorMessage } = this.state;
+
     return (
       <View style={{
         alignItems: "center",
@@ -35,15 +154,32 @@ class LoginScreen extends Component {
         />
         <Text style={{
           fontSize: 15,
-          marginBottom: 30
+          marginBottom: 30,
+          textAlign: "center"
         }}>
           Welcome. Please login to your account.
+          {(formErrorMessage) ? (
+            <Text style={{
+              color: "#fa291f",
+              fontSize: 14,
+            }}>
+              {"\n"}{"\n"}The credentials entered are invalid.
+            </Text>
+          ) : (
+            null
+          )}
         </Text>
       </View>
     )
   }
 
   renderFormInputs() {
+    const { 
+      formEmailAddressErrorMessage,
+      formPasswordErrorMessage,
+      formEmailAddressEditable,
+      formPasswordEditable } = this.state;
+
     return (
       <View style={{
         alignItems: "center",
@@ -54,6 +190,9 @@ class LoginScreen extends Component {
           placeholderTextColor="#4a4a4a"
           keyboardType="email-address"
           textContentType="username"
+          autoCapitalize="none"
+          errorMessage={formEmailAddressErrorMessage}
+          editable={formEmailAddressEditable}
           leftIcon={
             <Icon
               name="ios-mail"
@@ -78,13 +217,17 @@ class LoginScreen extends Component {
           inputStyle={{
             fontSize: 15
           }}
+          onChangeText={(formEmailAddress) => this.setState({ formEmailAddress })}
         />
         <Input
           placeholder="Enter your password"
           placeholderTextColor="#4a4a4a"
           textContentType="password"
+          editable={formPasswordEditable}
+          errorMessage={formPasswordErrorMessage}
           secureTextEntry={true}
           multiline={false} 
+          autoCapitalize="none"
           leftIcon={
             <Icon
               name="ios-lock"
@@ -101,19 +244,23 @@ class LoginScreen extends Component {
             borderWidth: 1,
             borderRadius: 5,
             borderColor: "#000",
-            marginRight: 30,
-            marginLeft: 30,
             width: "75%"
           }}
           inputStyle={{
             fontSize: 15
           }}
+          onChangeText={(formPassword) => this.setState({ formPassword })}
         />
       </View>
     )
   }
 
   renderButtons() {
+    const { 
+      loginLoading, 
+      loginButtonDisabled,
+      signupButtonDisabled } = this.state;
+
     return (
       <View style={{
         flexDirection: "row",
@@ -129,9 +276,15 @@ class LoginScreen extends Component {
             borderColor: "#000",
             backgroundColor: "#000",
           }}
+          disabledStyle={{
+            backgroundColor: "#000"
+          }}
           titleStyle={{
             fontSize: 15
           }}
+          onPress={this.handleLogin.bind(this)}
+          loading={loginLoading}
+          disabled={loginButtonDisabled}
         />
         <Button
           title="Signup"
@@ -148,25 +301,33 @@ class LoginScreen extends Component {
             color: "#000"
           }}
           onPress={() => this.props.navigation.navigate("Signup")}
+          disabled={signupButtonDisabled}
         />
       </View>
     );
   }
 
   renderResetPasswordText() {
+    const { resetButtonDisabled } = this.state;
+
     return (
       <View style={{
         position: 'absolute',
         bottom: 0
       }}>
         <Text style={{
-          color: "#4a4a4a"
+          color: "#4a4a4a",
+          textAlign: "center"
         }}>
           Forgot your password?
             <Text style={{
               color: "#000"
             }}
-            onPress={() => this.props.navigation.navigate("Reset")}
+            onPress={() => {
+              if (!resetButtonDisabled) {
+                this.props.navigation.navigate("Reset")
+              }
+            }}
             >
               &nbsp;Get a reset link.
             </Text>
@@ -176,6 +337,12 @@ class LoginScreen extends Component {
   }
 
   render() {
+    const { authenticated, serverSocketConnected } = this.props;
+
+    if (authenticated && serverSocketConnected) {
+      setTimeout(() => this.props.navigation.navigate('App'));
+    }
+
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         {this.renderLogoContainer()}
@@ -187,4 +354,12 @@ class LoginScreen extends Component {
   }
 }
 
-export default LoginScreen;
+function mapStateToProps(state, ownProps) {
+  return {
+    ...ownProps,
+    authenticated: getAuthenticated(state),
+    serverSocketConnected: getServerSocketConnected(state)
+  };
+}
+
+export default connect(mapStateToProps, { authenticate, triggerServerConnection })(LoginScreen);
