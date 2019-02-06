@@ -4,7 +4,7 @@ import { ListItem } from "react-native-elements";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { selectors, actionCreators, APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY } from "../../ClientStore";
+import { selectors, actionCreators, APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY } from "../../../ClientStore";
 
 const { triggerServerDisconnection, unauthenticate } = actionCreators;
 const { getUser } = selectors;
@@ -20,22 +20,20 @@ const list = [
   {
     title: "About",
     topDivider: true,
-    bottomDivider: false
+    bottomDivider: false,
+    navigateScreen: "About"
   },
   {
     title: "Preferences",
     topDivider: true,
-    bottomDivider: false
-  },
-  {
-    title: "Pricing Plans",
-    topDivider: true,
-    bottomDivider: false
+    bottomDivider: false,
+    navigateScreen: "Preferences"
   },
   {
     title: "Website",
     topDivider: true,
-    bottomDivider: true
+    bottomDivider: true,
+    navigateScreen: "Website"
   },
 ];
 
@@ -44,7 +42,7 @@ class AccountScreen extends Component {
     return {
       headerTitle: (
         <Image
-          source={require('../../assets/carbon8WordmarkLogoBlack.png')}
+          source={require('../../../assets/carbon8WordmarkLogoBlack.png')}
           style={{ width: 110, height: 25, marginBottom: 5 }}
         />
       ),
@@ -81,7 +79,9 @@ class AccountScreen extends Component {
 
     return (
       <View style={styles.container}>
-        <View>
+        <View style={{
+          marginTop: 20
+        }}>
           <ListItem
             key={5}
             leftAvatar={{ title: initials }}
@@ -93,6 +93,7 @@ class AccountScreen extends Component {
               fontSize: 14
             }}
             subtitle={subtitle}
+            topDivider={true}
             bottomDivider={true}
           />
         </View>
@@ -110,6 +111,7 @@ class AccountScreen extends Component {
                 topDivider={l.topDivider}
                 bottomDivider={l.bottomDivider}
                 chevron={true}
+                onPress={() => this.props.navigation.navigate(l.navigateScreen)}
               />
             ))
           }

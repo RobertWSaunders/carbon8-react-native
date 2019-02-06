@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { Component } from "react";
+import { StyleSheet, View, Text } from 'react-native';
+import React, { Component } from 'react';
 
 const styles = StyleSheet.create({
   container: {
@@ -9,22 +9,21 @@ const styles = StyleSheet.create({
   }
 });
 
-class SignupScreen extends Component {
+class AboutScreen extends Component {
+
   static navigationOptions = ({ navigation }) => {
     return {
-      headerStyle: {
-        border: 0
-      }
+      headerTitle: "About"
     }
-  }
+  };
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Signup</Text>
+        <Text>About</Text>
       </View>
-    )
+    );
   }
 }
 
-export default SignupScreen;
+export default AboutScreen;

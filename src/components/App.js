@@ -8,13 +8,30 @@ import {
   createAppContainer 
 } from "react-navigation";
 
+// Auth Stack Screens 
+
 import AuthLoadingScreen from "./AuthStack/AuthLoadingScreen";
-import AccountScreen from "./TabStack/AccountScreen";
 import SignupScreen from "./AuthStack/SignupScreen";
 import ResetScreen from "./AuthStack/ResetScreen";
 import LoginScreen from "./AuthStack/LoginScreen";
-import HomeScreen from "./TabStack/HomeScreen";
-import MapScreen from "./TabStack/MapScreen";
+
+// Home Stack Screens
+
+import HomeScreen from "./TabStack/HomeStack/HomeScreen";
+
+// Map Stack Screens
+
+import MapScreen from "./TabStack/MapStack/MapScreen";
+
+// Account Stack Screens 
+
+import PreferencesScreen from "./TabStack/AccountStack/PreferencesScreen";
+import AccountScreen from "./TabStack/AccountStack/AccountScreen";
+import WebsiteScreen from "./TabStack/AccountStack/WebsiteScreen";
+import AboutScreen from "./TabStack/AccountStack/AboutScreen";
+
+// App Stack Modal Screens
+
 import ScanModal from "./Modal/ScanModal";
 
 const AuthStack = createStackNavigator(
@@ -25,12 +42,21 @@ const AuthStack = createStackNavigator(
   },
   {
     initialRouteName: "Login",
+    defaultNavigationOptions: {
+      headerTintColor: "#000"
+    }
   }
 )
 
 const MapStack = createStackNavigator(
   {
     Map: MapScreen
+  },
+  {
+    initialRouteName: "Map",
+    defaultNavigationOptions: {
+      headerTintColor: "#000"
+    }
   }
 );
 
@@ -38,48 +64,75 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen
   },
+  {
+    initialRouteName: "Home",
+    defaultNavigationOptions: {
+      headerTintColor: "#000"
+    }
+  }
 );
 
 const AccountStack = createStackNavigator(
   {
-    Account: AccountScreen
+    Preferences: PreferencesScreen,
+    Website: WebsiteScreen,
+    Account: AccountScreen,
+    About: AboutScreen
+  },
+  {
+    initialRouteName: "Account",
+    defaultNavigationOptions: {
+      headerTintColor: "#000"
+    }
   }
 )
 
-MapStack.navigationOptions = {
-  tabBarLabel: "Map",
-  tabBarIcon: ({ focused, horizontal, tintColor }) => (
-    <Icon
-      name="ios-map"
-      size={25}
-      color={tintColor}
-      style={{ marginTop: 5 }}
-    />
-  )
+MapStack.navigationOptions = ({ navigation }) => { 
+  return {
+    tabBarLabel: "Map",
+    tabBarIcon: ({ focused, horizontal, tintColor }) => (
+      <Icon
+        name="ios-map"
+        size={25}
+        color={tintColor}
+        style={{ marginTop: 5 }}
+      />
+    )
+  };
 };
 
-HomeStack.navigationOptions = {
-  tabBarLabel: "Water Log",
-  tabBarIcon: ({ focused, horizontal, tintColor }) => (
-    <Icon
-      name="ios-water"
-      size={25}
-      color={tintColor}
-      style={{ marginTop: 5 }}
-    />
-  )
+HomeStack.navigationOptions = ({ navigation }) => {
+  return {
+    tabBarLabel: "Water Log",
+    tabBarIcon: ({ focused, horizontal, tintColor }) => (
+      <Icon
+        name="ios-water"
+        size={25}
+        color={tintColor}
+        style={{ marginTop: 5 }}
+      />
+    )
+  };
 };
 
-AccountStack.navigationOptions = {
-  tabBarLabel: "Account",
-  tabBarIcon: ({ focused, horizontal, tintColor }) => (
-    <Icon
-      name="ios-contact"
-      size={25}
-      color={tintColor}
-      style={{ marginTop: 5 }}
-    />
-  )
+AccountStack.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarLabel: "Account",
+    tabBarVisible,
+    tabBarIcon: ({ focused, horizontal, tintColor }) => (
+      <Icon
+        name="ios-contact"
+        size={25}
+        color={tintColor}
+        style={{ marginTop: 5 }}
+      />
+    ),
+  };
 };
 
 const TabStack = createBottomTabNavigator(
@@ -102,20 +155,21 @@ const TabStack = createBottomTabNavigator(
 
 const AppStack = createStackNavigator(
   {
-    Main: TabStack,
-    ScanModal: ScanModal
+    ScanModal: ScanModal,
+    Main: TabStack
   },
   {
-    mode: "modal",
-    headerMode: "none"
+    initialRouteName: "Main",
+    headerMode: "none",
+    mode: "modal"
   },
 );
 
 export default createAppContainer(createSwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
-    App: AppStack,
     Auth: AuthStack,
+    App: AppStack,
   },
   {
     initialRouteName: "AuthLoading"

@@ -1,31 +1,32 @@
 import { StyleSheet, View, Text, TouchableHighlight, Image } from 'react-native';
 import Icon from "react-native-vector-icons/Ionicons";
+import { ListItem } from "react-native-elements";
 import React, { Component } from "react";
 import MapView from "react-native-maps";
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center"
-  },
   map: {
     top: 0,
-    height: "65%",
+    height: 400,
     width: "100%"
-  },
-  list: {
-    flex: 1
   }
 });
+
+const list = [
+  {
+    title: "Robert's Personal Fountain",
+    topDivider: true,
+    bottomDivider: true,
+    navigateScreen: "About"
+  }
+];
 
 class MapScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: (
         <Image
-          source={require('../../assets/carbon8WordmarkLogoBlack.png')}
+          source={require('../../../assets/carbon8WordmarkLogoBlack.png')}
           style={{ width: 110, height: 25, marginBottom: 5 }}
         />
       ),
@@ -45,7 +46,7 @@ class MapScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View>
         <MapView
           style={styles.map}
           initialRegion={{
@@ -55,8 +56,25 @@ class MapScreen extends Component {
             longitudeDelta: 0.0421,
           }}
         />
-        <View style={styles.list}>
-          <Text>Map of fountains!</Text>
+        <View style={{
+          width: "100%"
+        }}>
+          {
+            list.map((l, i) => (
+              <ListItem
+                key={i}
+                title={l.title}
+                titleStyle={{
+                  fontSize: 15
+                }}
+                topDivider={l.topDivider}
+                bottomDivider={l.bottomDivider}
+                chevron={true}
+                onPress={() => this.props.navigation.navigate(l.navigateScreen)}
+                badge={{ value: "300m" }}
+              />
+            ))
+          }
         </View>
       </View>
     )

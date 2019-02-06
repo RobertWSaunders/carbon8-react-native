@@ -16,7 +16,7 @@ class HomeScreen extends Component {
     return {
       headerTitle: (
         <Image
-          source={require('../../assets/carbon8WordmarkLogoBlack.png')}
+          source={require('../../../assets/carbon8WordmarkLogoBlack.png')}
           style={{ width: 110, height: 25, marginBottom: 5 }}
         />
       ),
