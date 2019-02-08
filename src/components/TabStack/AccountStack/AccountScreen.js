@@ -1,12 +1,13 @@
-import { StyleSheet, View, TouchableHighlight, Image, AsyncStorage } from "react-native";
+import { StyleSheet, ScrollView, View, RefreshControl, TouchableHighlight, Image, AsyncStorage } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { ListItem } from "react-native-elements";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import axios from "axios";
 
 import { selectors, actionCreators, APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY } from "../../../ClientStore";
 
-const { triggerServerDisconnection, unauthenticate } = actionCreators;
+const { triggerServerDisconnection, unauthenticate, setUser } = actionCreators;
 const { getUser } = selectors;
 
 const styles = StyleSheet.create({
@@ -38,6 +39,7 @@ const list = [
 ];
 
 class AccountScreen extends Component {
+
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: (
@@ -60,6 +62,24 @@ class AccountScreen extends Component {
     };
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      refreshing: false,
+    };
+  }
+
+  async onRefresh() {
+    this.setState({ refreshing: true });
+
+    setTimeout(() => {
+      this.setState({ refreshing: false });
+    }, 2000);
+    // const accessToken = await AsyncStorage.getItem(APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+
+    // axios.get()
+  }
+
   handleLogout() {
     this.props.triggerServerDisconnection();
 
@@ -78,9 +98,17 @@ class AccountScreen extends Component {
     const subtitle = (subscribed) ? "Premium" : "Standard";
 
     return (
-      <View style={styles.container}>
+      <ScrollView 
+        style={styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this.onRefresh.bind(this)}
+          />
+        }
+      >
         <View style={{
-          marginTop: 20
+          marginTop: (this.state.refreshing) ? 0 : 20
         }}>
           <ListItem
             key={5}
@@ -131,7 +159,7 @@ class AccountScreen extends Component {
             onPress={this.handleLogout.bind(this)}
           />
         </View>
-      </View>
+      </ScrollView>
     )
   }
 }

@@ -33,6 +33,7 @@ import AboutScreen from "./TabStack/AccountStack/AboutScreen";
 // App Stack Modal Screens
 
 import ScanModal from "./Modal/ScanModal";
+import LogModal from "./Modal/LogModal";
 
 const AuthStack = createStackNavigator(
   {
@@ -156,6 +157,7 @@ const TabStack = createBottomTabNavigator(
 const AppStack = createStackNavigator(
   {
     ScanModal: ScanModal,
+    LogModal: LogModal,
     Main: TabStack
   },
   {

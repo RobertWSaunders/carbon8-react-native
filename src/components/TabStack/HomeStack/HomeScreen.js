@@ -1,14 +1,7 @@
-import { StyleSheet, View, Text, TouchableHighlight, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableHighlight, Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { Card, Divider } from "react-native-elements";
 import React, { Component } from 'react';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-});
 
 class HomeScreen extends Component {
 
@@ -30,14 +23,30 @@ class HomeScreen extends Component {
             onPress={() => navigation.navigate("ScanModal")}
           />
         </TouchableHighlight>
+      ),
+      headerLeft: (
+        <TouchableHighlight onPress={() => navigation.navigate("ScanModal")}>
+          <Icon
+            name="ios-add-circle-outline"
+            size={30}
+            color="#000"
+            style={{ marginLeft: 15 }}
+            onPress={() => navigation.navigate("LogModal")}
+          />
+        </TouchableHighlight>
       )
     };
   };
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Home</Text>
+      <View>
+        <Card title="Today's Intake">
+          <View>
+            <Text>Bob</Text>
+          </View>
+        </Card>
+        <Divider style={{ backgroundColor: "#000", marginTop: 20 }} />
       </View>
     );
   }
