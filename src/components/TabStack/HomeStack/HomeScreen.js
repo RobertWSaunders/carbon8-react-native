@@ -25,7 +25,7 @@ class HomeScreen extends Component {
         </TouchableHighlight>
       ),
       headerLeft: (
-        <TouchableHighlight onPress={() => navigation.navigate("ScanModal")}>
+        <TouchableHighlight onPress={() => navigation.navigate("LogModal")}>
           <Icon
             name="ios-add-circle-outline"
             size={30}
