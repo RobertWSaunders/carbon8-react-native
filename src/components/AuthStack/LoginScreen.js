@@ -15,13 +15,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom:40
+    marginBottom: 40
   }
 });
 
 class LoginScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
+      title: "Login",
       header: null
     }
   }
@@ -79,6 +80,35 @@ class LoginScreen extends Component {
     });
   }
 
+  validateFormFields() {
+    const { formEmailAddress, formPassword } = this.state;
+
+    let status = true;
+    const messages = {
+      passwordMsg: "",
+      emailMsg: ""
+    };
+
+    if (formPassword.length === 0) {
+      status = false;
+      messages.passwordMsg = "Please enter a password."
+    }
+
+    if (formPassword.length !== 0 && formPassword.length < 8) {
+      status = false;
+      messages.passwordMsg = "Please enter a valid password (min 8 chars)."
+    }
+
+    if (!/^.+@.+$/.test(formEmailAddress)) {
+      status = false;
+      messages.emailMsg = "Please enter a valid email."
+    }
+
+    this.stopValidatingInputs(messages.passwordMsg, messages.emailMsg)
+
+    return status;
+  }
+
   async handleLogin() {
     this.startLoginHandling();
 
@@ -108,32 +138,8 @@ class LoginScreen extends Component {
 
       this.stopLoginHandling();
     } catch(err) {
-      console.log(err.response);
+      this.stopLoginHandling("The credentials provided are invalid.");
     }
-  }
-
-  validateFormFields() {
-    const { formEmailAddress, formPassword } = this.state;
-
-    let status = true;
-    const messages = {
-      passwordMsg: "",
-      emailMsg: ""
-    };    
-
-    if (formPassword.length === 0) {
-      status = false;
-      messages.passwordMsg = "Please enter a password."
-    }
-
-    if (!/^.+@.+$/.test(formEmailAddress)) {
-      status = false;
-      messages.emailMsg = "Please enter a valid email."
-    }
-
-    this.stopValidatingInputs(messages.passwordMsg, messages.emailMsg)
-
-    return status;
   }
 
   renderLogoContainer() {
@@ -163,7 +169,7 @@ class LoginScreen extends Component {
               color: "#fa291f",
               fontSize: 14,
             }}>
-              {"\n"}{"\n"}The credentials entered are invalid.
+              {"\n"}{"\n"}{formErrorMessage}
             </Text>
           ) : (
             null
