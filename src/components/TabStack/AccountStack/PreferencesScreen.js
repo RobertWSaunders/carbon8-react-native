@@ -1,13 +1,22 @@
-import { StyleSheet, View, Text } from 'react-native';
-import React, { Component } from 'react';
+import { StyleSheet, View, Text } from "react-native";
+import { ListItem } from "react-native-elements";
+import React, { Component } from "react";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    backgroundColor: "#eff1f4"
   }
 });
+
+const preferences = [
+  {
+    title: "Live Progress Modal",
+    topDivider: true,
+    bottomDivider: true,
+    navigateScreen: "About"
+  }
+];
 
 class PreferencesScreen extends Component {
 
@@ -20,7 +29,26 @@ class PreferencesScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Preferences</Text>
+        <View style={{
+          marginTop: 20
+        }}>
+          {
+            preferences.map((l, i) => (
+              <ListItem
+                key={i}
+                title={l.title}
+                titleStyle={{
+                  fontSize: 15
+                }}
+                topDivider={l.topDivider}
+                bottomDivider={l.bottomDivider}
+                switch={{
+                  value: true
+                }}
+              />
+            ))
+          }
+        </View>
       </View>
     );
   }

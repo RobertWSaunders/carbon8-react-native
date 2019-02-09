@@ -8,7 +8,7 @@ class LogModal extends Component {
     super()
     this.state = {
       selectedIndex: 0,
-      title: "Add Manual Log"
+      title: "Add Hydration Goal"
     }
     this.updateIndex = this.updateIndex.bind(this)
   }
@@ -19,13 +19,13 @@ class LogModal extends Component {
         console.log(selectedIndex);
         this.setState({
           selectedIndex,
-          title: "Add Manual Log"
+          title: "Add Hydration Goal"
         });
         break;
       case 1:
         this.setState({
           selectedIndex,
-          title: "Add Hydration Goal"
+          title: "Add Manual Log"
         });
         break;
     }
@@ -34,7 +34,7 @@ class LogModal extends Component {
   render() {
     const { selectedIndex, title } = this.state
 
-    const buttons = ["Add Manual Log", "Add Hydration Goal"]
+    const buttons = ["Add Hydration Goal", "Add Manual Log"]
 
     return (
       <View>
