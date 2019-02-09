@@ -1,14 +1,14 @@
 import Icon from "react-native-vector-icons/Ionicons";
 import React from "react";
 
-import { 
-  createBottomTabNavigator, 
-  createSwitchNavigator, 
-  createStackNavigator, 
-  createAppContainer 
+import {
+  createBottomTabNavigator,
+  createSwitchNavigator,
+  createStackNavigator,
+  createAppContainer
 } from "react-navigation";
 
-// Auth Stack Screens 
+// Auth Stack Screens
 
 import AuthLoadingScreen from "./AuthStack/AuthLoadingScreen";
 import SignupScreen from "./AuthStack/SignupScreen";
@@ -23,8 +23,9 @@ import HomeScreen from "./TabStack/HomeStack/HomeScreen";
 
 import MapScreen from "./TabStack/MapStack/MapScreen";
 
-// Account Stack Screens 
+// Account Stack Screens
 
+import PricingPlansScreen from "./TabStack/AccountStack/PricingPlansScreen";
 import PreferencesScreen from "./TabStack/AccountStack/PreferencesScreen";
 import AccountScreen from "./TabStack/AccountStack/AccountScreen";
 import WebsiteScreen from "./TabStack/AccountStack/WebsiteScreen";
@@ -47,7 +48,7 @@ const AuthStack = createStackNavigator(
       headerTintColor: "#000"
     }
   }
-)
+);
 
 const MapStack = createStackNavigator(
   {
@@ -75,6 +76,7 @@ const HomeStack = createStackNavigator(
 
 const AccountStack = createStackNavigator(
   {
+    PricingPlans: PricingPlansScreen,
     Preferences: PreferencesScreen,
     Website: WebsiteScreen,
     Account: AccountScreen,
@@ -86,9 +88,9 @@ const AccountStack = createStackNavigator(
       headerTintColor: "#000"
     }
   }
-)
+);
 
-MapStack.navigationOptions = ({ navigation }) => { 
+MapStack.navigationOptions = ({ navigation }) => {
   return {
     tabBarLabel: "Map",
     tabBarIcon: ({ focused, horizontal, tintColor }) => (
@@ -132,7 +134,7 @@ AccountStack.navigationOptions = ({ navigation }) => {
         color={tintColor}
         style={{ marginTop: 5 }}
       />
-    ),
+    )
   };
 };
 
@@ -171,7 +173,7 @@ export default createAppContainer(createSwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
     Auth: AuthStack,
-    App: AppStack,
+    App: AppStack
   },
   {
     initialRouteName: "AuthLoading"

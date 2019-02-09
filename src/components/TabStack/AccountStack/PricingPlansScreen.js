@@ -9,21 +9,21 @@ const styles = StyleSheet.create({
   }
 });
 
-class AboutScreen extends Component {
+class PricingPlansScreen extends Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      headerTitle: "About"
+      headerTitle: "Pricing Plans"
     };
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>About</Text>
+        <Text>Pricing Plans</Text>
       </View>
     );
   }
 }
 
-export default AboutScreen;
+export default PricingPlansScreen;

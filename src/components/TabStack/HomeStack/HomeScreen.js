@@ -17,7 +17,7 @@ class HomeScreen extends Component {
       headerRight: (
         <TouchableHighlight onPress={() => navigation.navigate("ScanModal")}>
           <Icon
-            name="ios-barcode" 
+            name="ios-barcode"
             size={30}
             color="#000"
             style={{ marginRight: 15 }}
@@ -43,13 +43,13 @@ class HomeScreen extends Component {
     super(props);
 
     this.state = {
-      refreshing: false,
+      refreshing: false
     };
   }
 
   onRefresh() {
     this.setState({ refreshing: true });
-    
+
     setTimeout(() => {
       this.setState({ refreshing: false });
     }, 3000);
@@ -57,7 +57,7 @@ class HomeScreen extends Component {
 
   render() {
     return (
-      <ScrollView 
+      <ScrollView
         style={{
           flex: 1
         }}
@@ -73,16 +73,16 @@ class HomeScreen extends Component {
           height: 260,
           width: "100%"
         }}>
-          <Swiper 
+          <Swiper
             autoplay={true}
             autoplayTimeout={10}
             activeDotColor="#000"
             paginationStyle={{
-              marginBottom: -15,
+              marginBottom: -15
             }}
           >
             <View>
-              <Card 
+              <Card
                 title="Daily Intake"
                 titleStyle={{
                   fontSize: 16,
@@ -96,7 +96,7 @@ class HomeScreen extends Component {
                   padding: 0
                 }}
                 dividerStyle={{
-                  backgroundColor: "#000",
+                  backgroundColor: "#000"
                 }}
                 wrapperStyle={{
                   margin: 0,
@@ -108,10 +108,10 @@ class HomeScreen extends Component {
                 <View
                   style={{
                     backgroundColor: "#fff",
-                    height: 50,
+                    height: 50
                   }}
                 >
-                  <Text 
+                  <Text
                     style={{
                       textAlign: "center",
                       fontSize: 32
@@ -174,7 +174,7 @@ class HomeScreen extends Component {
                   top: 0,
                   margin: 0,
                   padding: 0,
-                  backgroundColor: "#000",
+                  backgroundColor: "#000"
                 }}
                 wrapperStyle={{
                   margin: 0,
@@ -186,7 +186,7 @@ class HomeScreen extends Component {
                 <View
                   style={{
                     backgroundColor: "#fff",
-                    height: 50,
+                    height: 50
                   }}
                 >
                   <Text
@@ -249,7 +249,7 @@ class HomeScreen extends Component {
                   padding: 0
                 }}
                 dividerStyle={{
-                  backgroundColor: "#000",
+                  backgroundColor: "#000"
                 }}
                 wrapperStyle={{
                   margin: 0,
@@ -261,7 +261,7 @@ class HomeScreen extends Component {
                 <View
                   style={{
                     backgroundColor: "#fff",
-                    height: 50,
+                    height: 50
                   }}
                 >
                   <Text
@@ -316,7 +316,7 @@ class HomeScreen extends Component {
           style={{
             alignItems: "center"
           }}
-        > 
+        >
           <Text
             style={{
               textAlign: "center",

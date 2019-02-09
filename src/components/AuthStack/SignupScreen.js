@@ -1,11 +1,12 @@
 import { KeyboardAvoidingView, StyleSheet, Text, View, Image, AsyncStorage } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { Input, Button } from 'react-native-elements';
+import { Input, Button } from "react-native-elements";
+import Config from "react-native-config";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 
-import { selectors, actionCreators, APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY } from "../../ClientStore";
+import { selectors, actionCreators } from "../../ClientStore";
 
 const { getServerSocketConnected, getAuthenticated } = selectors;
 const { triggerServerConnection, authenticate } = actionCreators;
@@ -91,7 +92,7 @@ class SignupScreen extends Component {
     const { formEmailAddress, formPassword, formConfirmPassword, formFullName } = this.state;
 
     let status = true;
-    let messages = {
+    const messages = {
       nameMsg: "",
       confirmMsg: "",
       passwordMsg: "",
@@ -100,32 +101,32 @@ class SignupScreen extends Component {
 
     if (formFullName.length === 0) {
       status = 0;
-      messages.nameMsg = "Please enter your full name."
+      messages.nameMsg = "Please enter your full name.";
     }
 
     if (formPassword.length === 0) {
       status = false;
-      messages.passwordMsg = "Please enter a password."
+      messages.passwordMsg = "Please enter a password.";
     }
 
     if (formPassword.length !== 0 && formPassword.length < 8) {
       status = false;
-      messages.passwordMsg = "Please enter a valid password (min 8 chars)."
+      messages.passwordMsg = "Please enter a valid password (min 8 chars).";
     }
 
     if (!/^.+@.+$/.test(formEmailAddress)) {
       status = false;
-      messages.emailMsg = "Please enter a valid email."
+      messages.emailMsg = "Please enter a valid email.";
     }
 
     if (formPassword.length !== 0 && formPassword.length > 7 && formConfirmPassword.length === 0) {
       status = false;
-      messages.confirmMsg = "Please confirm your password."
+      messages.confirmMsg = "Please confirm your password.";
     }
 
     if (formConfirmPassword.length !== 0 && formPassword !== formConfirmPassword) {
       status = false;
-      messages.confirmMsg = "Passwords do not match."
+      messages.confirmMsg = "Passwords do not match.";
     }
 
     this.stopValidatingInputs(messages.nameMsg, messages.emailMsg, messages.passwordMsg, messages.confirmMsg);
@@ -138,7 +139,7 @@ class SignupScreen extends Component {
 
     if (!this.validateFormFields()) {
       return this.stopSignupHandling();
-    };
+    }
 
     const { formEmailAddress, formPassword, formFullName } = this.state;
 
@@ -148,7 +149,7 @@ class SignupScreen extends Component {
     const lastName = name.slice(-1).join(" ");
 
     try {
-      const res = await axios.post("http://localhost:3001/auth/signup", {
+      const res = await axios.post(`${Config.CARBON8_SERVER_URL}/auth/signup`, {
         firstName,
         lastName,
         email: formEmailAddress,
@@ -163,7 +164,7 @@ class SignupScreen extends Component {
         appSessionId
       });
 
-      await AsyncStorage.setItem(APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY, appAccessToken);
+      await AsyncStorage.setItem(Config.APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY, appAccessToken);
 
       this.props.triggerServerConnection();
 
@@ -178,7 +179,7 @@ class SignupScreen extends Component {
 
     return (
       <View style={{
-        alignItems: "center",
+        alignItems: "center"
       }}>
         <Image
           source={require("../../assets/carbon8WordmarkLogoBlack.png")}
@@ -192,22 +193,22 @@ class SignupScreen extends Component {
         <Text style={{
           fontSize: 15,
           marginBottom: 30,
-          textAlign: "center",
+          textAlign: "center"
         }}>
           A more hydrated you starts here.
-        {(formErrorMessage) ? (
+          {(formErrorMessage) ? (
             <Text style={{
               color: "#fa291f",
-              fontSize: 14,
+              fontSize: 14
             }}>
               {"\n"}{"\n"}{formErrorMessage}
-          </Text>
+            </Text>
           ) : (
-              null
-            )}
+            null
+          )}
         </Text>
       </View>
-    )
+    );
   }
 
   renderFormInputs() {
@@ -248,7 +249,7 @@ class SignupScreen extends Component {
             marginRight: 10
           }}
           containerStyle={{
-            marginBottom: 15,
+            marginBottom: 15
           }}
           inputContainerStyle={{
             borderWidth: 1,
@@ -282,7 +283,7 @@ class SignupScreen extends Component {
             marginRight: 10
           }}
           containerStyle={{
-            marginBottom: 15,
+            marginBottom: 15
           }}
           inputContainerStyle={{
             borderWidth: 1,
@@ -317,7 +318,7 @@ class SignupScreen extends Component {
             marginRight: 10
           }}
           containerStyle={{
-            marginBottom: 15,
+            marginBottom: 15
           }}
           inputContainerStyle={{
             borderWidth: 1,
@@ -363,19 +364,19 @@ class SignupScreen extends Component {
           onChangeText={(formConfirmPassword) => this.setState({ formConfirmPassword })}
         />
       </View>
-    )
+    );
   }
 
   renderButtons() {
     const {
       signupLoading,
-      signupButtonDisabled 
+      signupButtonDisabled
     } = this.state;
 
     return (
       <View style={{
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "center"
       }}>
         <Button
           title="Signup"
@@ -384,7 +385,7 @@ class SignupScreen extends Component {
             borderWidth: 1,
             borderRadius: 5,
             borderColor: "#000",
-            backgroundColor: "#000",
+            backgroundColor: "#000"
           }}
           disabledStyle={{
             backgroundColor: "#000"
@@ -401,7 +402,7 @@ class SignupScreen extends Component {
   }
 
   renderTermsAndPrivacyText() {
-    const { 
+    const {
       termsButtonDisabled,
       privacyButtonDisabled
     } = this.state;
@@ -415,34 +416,36 @@ class SignupScreen extends Component {
           color: "#4a4a4a",
           textAlign: "center"
         }}>
-          By signing up you agree to our 
-            <Text style={{
+          By signing up you agree to our
+          <Text
+            style={{
               color: "#000"
             }}
             onPress={() => {
               if (!termsButtonDisabled) {
-                this.props.navigation.navigate("Reset")
+                this.props.navigation.navigate("Reset");
               }
             }}
           >
             &nbsp;Terms of Service
-            </Text>
+          </Text>
           &nbsp;and&nbsp;
-             <Text style={{
+          <Text
+            style={{
               color: "#000"
             }}
             onPress={() => {
               if (!privacyButtonDisabled) {
-                this.props.navigation.navigate("Reset")
+                this.props.navigation.navigate("Reset");
               }
             }}
           >
             Privacy Policy
-            </Text>
+          </Text>
             .
         </Text>
       </View>
-    )
+    );
   }
 
   render() {
@@ -453,13 +456,16 @@ class SignupScreen extends Component {
     }
 
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior="padding"
+      >
         {this.renderLogoContainer()}
         {this.renderFormInputs()}
         {this.renderButtons()}
         {this.renderTermsAndPrivacyText()}
       </KeyboardAvoidingView>
-    )
+    );
   }
 }
 

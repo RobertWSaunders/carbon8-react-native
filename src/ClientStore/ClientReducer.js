@@ -36,7 +36,7 @@ const handlers = {
     return {
       ...state,
       test
-    }
+    };
   },
   [actionTypes.SET_USER]: (state, action) => {
     const { user } = action.data;

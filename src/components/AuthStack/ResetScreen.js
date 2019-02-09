@@ -1,6 +1,7 @@
 import { KeyboardAvoidingView, StyleSheet, Text, View, Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { Input, Button } from 'react-native-elements';
+import { Input, Button } from "react-native-elements";
+import Config from "react-native-config";
 import React, { Component } from "react";
 import axios from "axios";
 
@@ -34,7 +35,7 @@ class ResetScreen extends Component {
     this.setState({
       resetLoading: true,
       resetButtonDisabled: true,
-      formEmailAddressEditable: false,
+      formEmailAddressEditable: false
     });
   }
 
@@ -63,10 +64,10 @@ class ResetScreen extends Component {
 
     if (!/^.+@.+$/.test(formEmailAddress)) {
       status = false;
-      emailMsg = "Please enter a valid email."
+      emailMsg = "Please enter a valid email.";
     }
 
-    this.stopValidatingInputs(emailMsg)
+    this.stopValidatingInputs(emailMsg);
 
     return status;
   }
@@ -76,12 +77,12 @@ class ResetScreen extends Component {
 
     if (!this.validateFormFields()) {
       return this.stopResetPasswordHandling();
-    };
+    }
 
     const { formEmailAddress } = this.state;
 
     try {
-      const res = await axios.post("http://localhost:3001/auth/createResetHash", {
+      const res = await axios.post(`${Config.CARBON8_SERVER_URL}/auth/createResetHash`, {
         email: formEmailAddress
       });
 
@@ -92,14 +93,14 @@ class ResetScreen extends Component {
   }
 
   renderLogoContainer() {
-    const { 
+    const {
       formErrorMessage,
       formSuccessMessage
     } = this.state;
 
     return (
       <View style={{
-        alignItems: "center",
+        alignItems: "center"
       }}>
         <Image
           source={require("../../assets/carbon8WordmarkLogoBlack.png")}
@@ -117,30 +118,20 @@ class ResetScreen extends Component {
           marginRight: 30,
           textAlign: "center"
         }}>
-          Oh no! It's easy to forget your password. Thankfully we can help you out. Enter your email below and we will send you a link to reset your password.
-          {(formErrorMessage) ? (
+          Oh no! {"It's"} easy to forget your password. Thankfully we can help you out. Enter your email below and we will send you a link to reset your password.
+          {(formErrorMessage || formSuccessMessage) ? (
             <Text style={{
-              color: "#fa291f",
-              fontSize: 14,
+              color: (formSuccessMessage) ? "#44bd32" : "#fa291f",
+              fontSize: 14
             }}>
-              {"\n"}{"\n"}{formErrorMessage}
+              {"\n"}{"\n"}{formErrorMessage}{formSuccessMessage}
             </Text>
           ) : (
-              null
-            )}
-          {(formSuccessMessage) ? (
-            <Text style={{
-              color: "#44bd32",
-              fontSize: 14,
-            }}>
-              {"\n"}{"\n"}{formSuccessMessage}
-            </Text>
-          ) : (
-              null
-            )}
+            null
+          )}
         </Text>
       </View>
-    )
+    );
   }
 
   renderFormInputs() {
@@ -186,7 +177,7 @@ class ResetScreen extends Component {
           onChangeText={(formEmailAddress) => this.setState({ formEmailAddress })}
         />
       </View>
-    )
+    );
   }
 
   renderButtons() {
@@ -198,7 +189,7 @@ class ResetScreen extends Component {
     return (
       <View style={{
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "center"
       }}>
         <Button
           title="Send Reset Link"
@@ -207,7 +198,7 @@ class ResetScreen extends Component {
             borderWidth: 1,
             borderRadius: 5,
             borderColor: "#000",
-            backgroundColor: "#000",
+            backgroundColor: "#000"
           }}
           disabledStyle={{
             backgroundColor: "#000"
@@ -236,20 +227,20 @@ class ResetScreen extends Component {
           textAlign: "center"
         }}>
           Forgot your password?
-            <Text style={{
+          <Text style={{
             color: "#000"
           }}
-            onPress={() => {
-              if (!resetButtonDisabled) {
-                this.props.navigation.navigate("Reset")
-              }
-            }}
+          onPress={() => {
+            if (!resetButtonDisabled) {
+              this.props.navigation.navigate("Reset");
+            }
+          }}
           >
             &nbsp;Get a reset link.
-            </Text>
+          </Text>
         </Text>
       </View>
-    )
+    );
   }
 
   render() {
@@ -265,7 +256,7 @@ class ResetScreen extends Component {
         {this.renderFormInputs()}
         {this.renderButtons()}
       </KeyboardAvoidingView>
-    )
+    );
   }
 }
 

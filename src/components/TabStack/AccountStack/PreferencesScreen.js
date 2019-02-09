@@ -1,5 +1,5 @@
-import { StyleSheet, View, Text } from "react-native";
 import { ListItem } from "react-native-elements";
+import { StyleSheet, View } from "react-native";
 import React, { Component } from "react";
 
 const styles = StyleSheet.create({
@@ -23,7 +23,7 @@ class PreferencesScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: "Preferences"
-    }
+    };
   };
 
   render() {

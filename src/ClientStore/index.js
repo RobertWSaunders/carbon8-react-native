@@ -1,28 +1,19 @@
-import {
-  actionTypes,
-  serverSocketEventActionMap,
-} from "./ClientActions";
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
+import { AsyncStorage } from "react-native";
+import Config from "react-native-config";
+
+import { actionTypes, serverSocketEventActionMap } from "./ClientActions";
 import createSocketMiddleware from "./ClientSocketMiddleware";
 import { reducer, reducerMount } from "./ClientReducer";
-import { AsyncStorage } from "react-native";
-
-const IS_PROD = process.env.NODE_ENV === "production";
-
-const SERVER_SOCKET_URI =
-  process.env.SERVER_SOCKET_URI || "http://localhost:3001";
-
-export const APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY =
-  "CARBON8_APP_ACCESS_TOKEN";
 
 const storageAccess = {
   getValue: (key) => Promise.resolve(AsyncStorage.getItem(key)),
-  setValue: (key, value) => Promise.resolve(AsyncStorage.setItem(key, value)),
-  removeValue: (key) => Promise.resolve(AsyncStorage.removeItem(key))
+  removeValue: (key) => Promise.resolve(AsyncStorage.removeItem(key)),
+  setValue: (key, value) => Promise.resolve(AsyncStorage.setItem(key, value))
 };
 
 const serverSocketMiddleware = createSocketMiddleware({
-  socketUri: SERVER_SOCKET_URI,
+  socketUri: Config.CARBON8_SERVER_URL,
   middlewareActionRegex: /^@@\/client\/server\/socket\/.*/g,
   socketConnectionActionTypes: {
     connected: actionTypes.SERVER_SOCKET_CONNECTED,
@@ -30,7 +21,7 @@ const serverSocketMiddleware = createSocketMiddleware({
   },
   socketEventActionMap: serverSocketEventActionMap,
   socketAuthenticateOnConnect: true,
-  accessTokenKey: APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY,
+  accessTokenKey: Config.APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY,
   socketAuthenticateAction: "AUTHENTICATE_APP",
   storageAccess
 });
@@ -42,7 +33,7 @@ export function getStore() {
     }),
     compose(
       applyMiddleware(serverSocketMiddleware),
-      !IS_PROD && window.__REDUX_DEVTOOLS_EXTENSION__
+      window.__REDUX_DEVTOOLS_EXTENSION__
         ? window.__REDUX_DEVTOOLS_EXTENSION__()
         : (f) => f
     )

@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 
-import { selectors, actionCreators, APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY } from "../../../ClientStore";
+import { selectors, actionCreators } from "../../../ClientStore";
 
 const { triggerServerDisconnection, unauthenticate, setUser } = actionCreators;
 const { getUser } = selectors;
@@ -31,11 +31,17 @@ const list = [
     navigateScreen: "Preferences"
   },
   {
+    title: "Pricing Plans",
+    topDivider: true,
+    bottomDivider: false,
+    navigateScreen: "PricingPlans"
+  },
+  {
     title: "Website",
     topDivider: true,
     bottomDivider: true,
     navigateScreen: "Website"
-  },
+  }
 ];
 
 class AccountScreen extends Component {
@@ -64,8 +70,9 @@ class AccountScreen extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
-      refreshing: false,
+      refreshing: false
     };
   }
 
@@ -75,9 +82,6 @@ class AccountScreen extends Component {
     setTimeout(() => {
       this.setState({ refreshing: false });
     }, 2000);
-    // const accessToken = await AsyncStorage.getItem(APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY);
-
-    // axios.get()
   }
 
   handleLogout() {
@@ -85,7 +89,7 @@ class AccountScreen extends Component {
 
     this.props.unauthenticate();
 
-    AsyncStorage.removeItem(APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+    AsyncStorage.removeItem(Config.APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
     this.props.navigation.navigate("Auth");
   }
@@ -98,7 +102,7 @@ class AccountScreen extends Component {
     const subtitle = (subscribed) ? "Premium" : "Standard";
 
     return (
-      <ScrollView 
+      <ScrollView
         style={styles.container}
         refreshControl={
           <RefreshControl
@@ -161,7 +165,7 @@ class AccountScreen extends Component {
           />
         </View>
       </ScrollView>
-    )
+    );
   }
 }
 
@@ -169,7 +173,7 @@ function mapStateToProps(state, ownProps) {
   return {
     ...ownProps,
     user: getUser(state)
-  }
+  };
 }
 
 export default connect(mapStateToProps, { triggerServerDisconnection, unauthenticate })(AccountScreen);

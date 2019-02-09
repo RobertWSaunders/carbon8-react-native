@@ -19,7 +19,7 @@ class ClientSocketMiddleware {
   isSocketMiddlewareAction(action) {
     return action.type.match(this.middlewareActionRegex);
   }
- 
+
   getSocketActionFromReduxAction(action) {
     const words = action.type.split("/");
 
@@ -80,8 +80,8 @@ class ClientSocketMiddleware {
       return this.createSocketConnection();
     }
 
-    const socketAction = this.getSocketActionFromReduxAction(action)
-    
+    const socketAction = this.getSocketActionFromReduxAction(action);
+
     if (socketAction === "TRIGGER_SERVER_DISCONNECTION") {
       this.socket.disconnect();
     } else {

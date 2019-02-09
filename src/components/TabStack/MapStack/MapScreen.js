@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TouchableHighlight, Image } from 'react-native';
+import { StyleSheet, View, TouchableHighlight, Image } from 'react-native';
 import Icon from "react-native-vector-icons/Ionicons";
 import { ListItem } from "react-native-elements";
 import React, { Component } from "react";
@@ -53,7 +53,7 @@ class MapScreen extends Component {
             latitude: 37.78825,
             longitude: -122.4324,
             latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            longitudeDelta: 0.0421
           }}
         />
         <View style={{
@@ -77,7 +77,7 @@ class MapScreen extends Component {
           }
         </View>
       </View>
-    )
+    );
   }
 }
 

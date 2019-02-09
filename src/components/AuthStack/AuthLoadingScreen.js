@@ -1,9 +1,10 @@
 import { View, Image, ActivityIndicator, AsyncStorage } from "react-native";
 import React, { Component } from "react";
+import Config from "react-native-config";
 import { connect } from "react-redux";
 import axios from "axios";
 
-import { selectors, actionCreators, APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY } from "../../ClientStore";
+import { selectors, actionCreators } from "../../ClientStore";
 
 const { getServerSocketConnected, getAuthenticated } = selectors;
 const { triggerServerConnection, authenticate } = actionCreators;
@@ -17,13 +18,13 @@ class AuthLoadingScreen extends Component {
 
   async bootstrapApplication() {
     try {
-      const oldAccessToken = await AsyncStorage.getItem(APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+      const oldAccessToken = await AsyncStorage.getItem(Config.APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
       if (oldAccessToken === null) {
         return this.props.navigation.navigate("Auth");
       }
 
-      const res = await axios.get("http://localhost:3001/auth/sessionFromAccessToken", {
+      const res = await axios.get(`${Config.CARBON8_SERVER_URL}/auth/sessionFromAccessToken`, {
         headers: {
           "Authorization": `Bearer ${oldAccessToken}`
         }
@@ -37,10 +38,11 @@ class AuthLoadingScreen extends Component {
         appSessionId
       });
 
-      await AsyncStorage.setItem(APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY, appAccessToken);
+      await AsyncStorage.setItem(Config.APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY, appAccessToken);
 
       this.props.triggerServerConnection();
-    } catch(err) {
+    } catch (err) {
+      console.log(err.response);
       setTimeout(() => {
         this.props.navigation.navigate('Auth');
       }, 800);
@@ -55,24 +57,27 @@ class AuthLoadingScreen extends Component {
     }
 
     return (
-      <View style={{ 
+      <View style={{
         flex: 1,
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center"
       }}>
-        <Image 
-          source={require("../../assets/carbon8WordmarkLogoBlack.png")} 
-          style={{ 
+        <Image
+          source={require("../../assets/carbon8WordmarkLogoBlack.png")}
+          style={{
             width: 200,
             height: 46,
             resizeMode: "contain",
             marginBottom: 20
           }}
         />
-        <ActivityIndicator size="small" color="#000" />
+        <ActivityIndicator
+          size="small"
+          color="#000"
+        />
       </View>
-    )
+    );
   }
 }
 

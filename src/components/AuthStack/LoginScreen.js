@@ -1,11 +1,12 @@
 import { KeyboardAvoidingView, StyleSheet, Text, View, Image, AsyncStorage } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
 import { Input, Button } from 'react-native-elements';
+import Icon from "react-native-vector-icons/Ionicons";
 import React, { Component } from "react";
+import Config from "react-native-config";
 import { connect } from "react-redux";
 import axios from "axios";
 
-import { selectors, actionCreators, APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY } from "../../ClientStore";
+import { selectors, actionCreators } from "../../ClientStore";
 
 const { getServerSocketConnected, getAuthenticated } = selectors;
 const { triggerServerConnection, authenticate } = actionCreators;
@@ -56,8 +57,8 @@ class LoginScreen extends Component {
       loginButtonDisabled: true,
       signupButtonDisabled: true,
       resetButtonDisabled: true,
-      formEmailAddressEditable: false,
-      formPasswordEditable: false
+      formPasswordEditable: false,
+      formEmailAddressEditable: false
     });
   }
 
@@ -119,7 +120,7 @@ class LoginScreen extends Component {
     const { formEmailAddress, formPassword } = this.state;
 
     try {
-      const res = await axios.post("http://localhost:3001/auth/session", {
+      const res = await axios.post(`${Config.CARBON8_SERVER_URL}/auth/session`, {
         email: formEmailAddress,
         password: formPassword
       });
@@ -132,7 +133,7 @@ class LoginScreen extends Component {
         appSessionId
       });
 
-      await AsyncStorage.setItem(APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY, appAccessToken);
+      await AsyncStorage.setItem(Config.APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY, appAccessToken);
 
       this.props.triggerServerConnection();
 
@@ -180,11 +181,12 @@ class LoginScreen extends Component {
   }
 
   renderFormInputs() {
-    const { 
+    const {
       formEmailAddressErrorMessage,
       formPasswordErrorMessage,
       formEmailAddressEditable,
-      formPasswordEditable } = this.state;
+      formPasswordEditable
+    } = this.state;
 
     return (
       <View style={{
@@ -232,7 +234,7 @@ class LoginScreen extends Component {
           editable={formPasswordEditable}
           errorMessage={formPasswordErrorMessage}
           secureTextEntry={true}
-          multiline={false} 
+          multiline={false}
           autoCapitalize="none"
           leftIcon={
             <Icon
@@ -262,10 +264,11 @@ class LoginScreen extends Component {
   }
 
   renderButtons() {
-    const { 
-      loginLoading, 
+    const {
+      loginLoading,
       loginButtonDisabled,
-      signupButtonDisabled } = this.state;
+      signupButtonDisabled
+    } = this.state;
 
     return (
       <View style={{

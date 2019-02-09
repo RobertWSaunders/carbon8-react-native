@@ -1,16 +1,16 @@
-import { StyleSheet, View, Text } from "react-native";
 import { Header, ButtonGroup } from "react-native-elements";
+import { StyleSheet, View, Text } from "react-native";
 import React, { Component } from "react";
 
 class LogModal extends Component {
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props);
+
     this.state = {
       selectedIndex: 0,
       title: "Add Hydration Goal"
-    }
-    this.updateIndex = this.updateIndex.bind(this)
+    };
   }
 
   updateIndex(selectedIndex) {
@@ -32,9 +32,9 @@ class LogModal extends Component {
   }
 
   render() {
-    const { selectedIndex, title } = this.state
+    const { selectedIndex, title } = this.state;
 
-    const buttons = ["Add Hydration Goal", "Add Manual Log"]
+    const buttons = ["Add Hydration Goal", "Add Manual Log"];
 
     return (
       <View>
@@ -48,7 +48,7 @@ class LogModal extends Component {
             <Text
               onPress={() => this.props.navigation.goBack()}
               style={{
-                fontSize: 16,
+                fontSize: 16
               }}>Close</Text>
           )}
           centerComponent={(
@@ -59,7 +59,7 @@ class LogModal extends Component {
           )}
         />
         <ButtonGroup
-          onPress={this.updateIndex}
+          onPress={this.updateIndex.bind(this)}
           selectedIndex={selectedIndex}
           buttons={buttons}
           containerStyle={{
@@ -67,7 +67,7 @@ class LogModal extends Component {
             left: 0,
             right: 0,
             margin: 0,
-            height: 50 
+            height: 50
           }}
           textStyle={{
             fontSize: 16,
@@ -82,7 +82,7 @@ class LogModal extends Component {
           }}
         />
       </View>
-    )
+    );
   }
 }
 
