@@ -1,6 +1,7 @@
 import { StyleSheet, ScrollView, View, RefreshControl, TouchableHighlight, Image, AsyncStorage } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { ListItem } from "react-native-elements";
+import Config from "react-native-config";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
@@ -13,7 +14,7 @@ const { getUser } = selectors;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#eff1f4"
+    backgroundColor: "#EFF1F4"
   }
 });
 

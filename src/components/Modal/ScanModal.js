@@ -49,7 +49,8 @@ class ScanModal extends Component {
             paddingRight: 50,
             paddingLeft: 50,
             justifyContent: "center",
-            textAlign: "center"
+            textAlign: "center",
+            fontSize: 15
           }}
         >
           Scan your barcode at any Carbon8 fountain to access sparkling water and log your consumption in the app.

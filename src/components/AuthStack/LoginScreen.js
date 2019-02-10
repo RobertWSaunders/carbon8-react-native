@@ -113,9 +113,9 @@ class LoginScreen extends Component {
   async handleLogin() {
     this.startLoginHandling();
 
-    if(!this.validateFormFields()) {
+    if (!this.validateFormFields()) {
       return this.stopLoginHandling();
-    };
+    }
 
     const { formEmailAddress, formPassword } = this.state;
 
@@ -138,7 +138,7 @@ class LoginScreen extends Component {
       this.props.triggerServerConnection();
 
       this.stopLoginHandling();
-    } catch(err) {
+    } catch (err) {
       this.stopLoginHandling("The credentials provided are invalid.");
     }
   }
@@ -148,7 +148,7 @@ class LoginScreen extends Component {
 
     return (
       <View style={{
-        alignItems: "center",
+        alignItems: "center"
       }}>
         <Image
           source={require("../../assets/carbon8WordmarkLogoBlack.png")}
@@ -168,7 +168,7 @@ class LoginScreen extends Component {
           {(formErrorMessage) ? (
             <Text style={{
               color: "#fa291f",
-              fontSize: 14,
+              fontSize: 14
             }}>
               {"\n"}{"\n"}{formErrorMessage}
             </Text>
@@ -214,7 +214,7 @@ class LoginScreen extends Component {
             marginRight: 10
           }}
           containerStyle={{
-            marginBottom: 15,
+            marginBottom: 15
           }}
           inputContainerStyle={{
             borderWidth: 1,
@@ -260,7 +260,7 @@ class LoginScreen extends Component {
           onChangeText={(formPassword) => this.setState({ formPassword })}
         />
       </View>
-    )
+    );
   }
 
   renderButtons() {
@@ -273,7 +273,7 @@ class LoginScreen extends Component {
     return (
       <View style={{
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "center"
       }}>
         <Button
           title="Login"
@@ -329,20 +329,20 @@ class LoginScreen extends Component {
           textAlign: "center"
         }}>
           Forgot your password?
-            <Text style={{
-              color: "#000"
-            }}
-            onPress={() => {
-              if (!resetButtonDisabled) {
-                this.props.navigation.navigate("Reset")
-              }
-            }}
-            >
-              &nbsp;Get a reset link.
-            </Text>
+          <Text style={{
+            color: "#000"
+          }}
+          onPress={() => {
+            if (!resetButtonDisabled) {
+              this.props.navigation.navigate("Reset")
+            }
+          }}
+          >
+            &nbsp;Get a reset link.
+          </Text>
         </Text>
       </View>
-    )
+    );
   }
 
   render() {
