@@ -13,7 +13,9 @@ const initialState = {
 
   serverSocketConnected: false,
 
-  dispensingWater: false,
+  dispensingFlatWater: false,
+  dispensingSparklingWater: false,
+
   fetchNewScanCodeForSession: false
 };
 
@@ -29,7 +31,9 @@ export const selectors = {
 
   getAppSessionId: (state) => state[reducerMount].appSessionId,
 
-  getDispensingWater: (state) => state[reducerMount].dispensingWater,
+  getDispensingFlatWater: (state) => state[reducerMount].dispensingFlatWater,
+  getDispensingSparklingWater: (state) => state[reducerMount].dispensingSparklingWater,
+
   getFetchNewScanCodeForSession: (state) => state[reducerMount].fetchNewScanCodeForSession
 };
 
@@ -43,16 +47,36 @@ const handlers = {
       fetchNewScanCodeForSession: false
     };
   },
-  [actionTypes.DISPENSING_WATER_START]: (state, action) => {
+  [actionTypes.SET_USER]: (state, action) => {
+    const { user } = action.data;
+
     return {
       ...state,
-      dispensingWater: true
+      user
     };
   },
-  [actionTypes.DISPENSING_WATER_END]: (state, action) => {
+  [actionTypes.DISPENSING_FLAT_WATER_START]: (state, action) => {
     return {
       ...state,
-      dispensingWater: false
+      dispensingFlatWater: true
+    };
+  },
+  [actionTypes.DISPENSING_FLAT_WATER_END]: (state, action) => {
+    return {
+      ...state,
+      dispensingFlatWater: false
+    };
+  },
+  [actionTypes.DISPENSING_SPARKLING_WATER_START]: (state, action) => {
+    return {
+      ...state,
+      dispensingSparklingWater: true
+    };
+  },
+  [actionTypes.DISPENSING_SPARKLING_WATER_END]: (state, action) => {
+    return {
+      ...state,
+      dispensingSparklingWater: false
     };
   },
   [actionTypes.SCAN_CODE_COMPLETE]: (state, action) => {

@@ -20,14 +20,19 @@ const serverSocketMiddlewareActionTypes = {
 
   // Events
 
-  DISPENSING_WATER_START: "@@/client/server/internal/DISPENSING_WATER_START",
-  DISPENSING_WATER_END: "@@/client/server/internal/DISPENSING_WATER_END",
+  DISPENSING_FLAT_WATER_START: "@@/client/server/internal/DISPENSING_FLAT_WATER_START",
+  DISPENSING_FLAT_WATER_END: "@@/client/server/internal/DISPENSING_FLAT_WATER_END",
+  DISPENSING_SPARKLING_WATER_START: "@@/client/server/internal/DISPENSING_SPARKLING_WATER_START",
+  DISPENSING_SPARKLING_WATER_END: "@@/client/server/internal/DISPENSING_SPARKLING_WATER_END",
+
   SCAN_CODE_COMPLETE: "@@/client/server/internal/SCAN_CODE_COMPLETE"
 };
 
 export const serverSocketEventActionMap = {
-  ["DISPENSING_WATER_START"]: serverSocketMiddlewareActionTypes.DISPENSING_WATER_START,
-  ["DISPENSING_WATER_END"]: serverSocketMiddlewareActionTypes.DISPENSING_WATER_END,
+  ["DISPENSING_FLAT_WATER_START"]: serverSocketMiddlewareActionTypes.DISPENSING_FLAT_WATER_START,
+  ["DISPENSING_FLAT_WATER_END"]: serverSocketMiddlewareActionTypes.DISPENSING_FLAT_WATER_END,
+  ["DISPENSING_SPARKLING_WATER_START"]: serverSocketMiddlewareActionTypes.DISPENSING_SPARKLING_WATER_START,
+  ["DISPENSING_SPARKLING_WATER_END"]: serverSocketMiddlewareActionTypes.DISPENSING_SPARKLING_WATER_END,
   ["SCAN_CODE_COMPLETE"]: serverSocketMiddlewareActionTypes.SCAN_CODE_COMPLETE
 };
 

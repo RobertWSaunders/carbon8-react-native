@@ -3,6 +3,7 @@ import { Header } from "react-native-elements";
 import QRCode from "react-native-qrcode-svg";
 import Config from "react-native-config";
 import React, { Component } from "react";
+import Emoji from "react-native-emoji";
 import { connect } from "react-redux";
 import axios from "axios";
 
@@ -13,7 +14,8 @@ const { setScanCode } = actionCreators;
 const {
   getScanCode,
   getAppSessionId,
-  getDispensingWater,
+  getDispensingFlatWater,
+  getDispensingSparklingWater,
   getFetchNewScanCodeForSession
 } = selectors;
 
@@ -100,20 +102,57 @@ class ScanModal extends Component {
             size={180}
           />
         </View>
-        {(this.props.dispensingWater) ? (
-          <Text
-            style={{
-              marginTop: 80,
-              marginBottom: 80,
-              paddingRight: 50,
-              paddingLeft: 50,
-              justifyContent: "center",
-              textAlign: "center",
-              fontSize: 15
-            }}
-          >
-            You are currently dispensing water!
-          </Text>
+        {(this.props.dispensingFlatWater) ? (
+          <View style={{
+            marginTop: 20
+          }}>
+            <Emoji
+              style={{
+                justifyContent: "center",
+                textAlign: "center",
+                fontSize: 100
+              }}
+              name={"rain_cloud"}
+            />
+            <Text
+              style={{
+                paddingRight: 20,
+                paddingLeft: 20,
+                justifyContent: "center",
+                textAlign: "center",
+                fontSize: 15
+              }}
+            >
+              You are currently dispensing flat water!
+            </Text>
+          </View>
+        ) : (
+          null
+        )}
+        {(this.props.dispensingSparklingWater) ? (
+          <View style={{
+            marginTop: 20
+          }}>
+            <Emoji
+              style={{
+                justifyContent: "center",
+                textAlign: "center",
+                fontSize: 100
+              }}
+              name={"sweat_drops"}
+            />
+            <Text
+              style={{
+                paddingRight: 20,
+                paddingLeft: 20,
+                justifyContent: "center",
+                textAlign: "center",
+                fontSize: 15
+              }}
+            >
+              You are currently dispensing sparkling water!
+            </Text>
+          </View>
         ) : (
           null
         )}
@@ -127,7 +166,8 @@ function mapStateToProps(state, ownProps) {
     ...ownProps,
     scanCode: getScanCode(state),
     appSessionId: getAppSessionId(state),
-    dispensingWater: getDispensingWater(state),
+    dispensingFlatWater: getDispensingFlatWater(state),
+    dispensingSparklingWater: getDispensingSparklingWater(state),
     fetchNewScanCodeForSession: getFetchNewScanCodeForSession(state)
   };
 }

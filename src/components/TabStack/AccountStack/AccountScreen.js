@@ -80,9 +80,27 @@ class AccountScreen extends Component {
   async onRefresh() {
     this.setState({ refreshing: true });
 
-    setTimeout(() => {
+    await this.fetchUserData();
+  }
+
+  async fetchUserData() {
+    try {
+      const accessToken = await AsyncStorage.getItem(Config.APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+
+      const res = await axios.get(`${Config.CARBON8_SERVER_URL}/api/users/${this.props.user.id}`, {
+        headers: {
+          "Authorization": `Bearer ${accessToken}`
+        }
+      });
+
+      const { user } = res.data;
+
+      this.props.setUser(user);
+
       this.setState({ refreshing: false });
-    }, 2000);
+    } catch (err) {
+      this.setState({ refreshing: false });
+    }
   }
 
   handleLogout() {
@@ -177,4 +195,10 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, { triggerServerDisconnection, unauthenticate })(AccountScreen);
+export default connect(
+  mapStateToProps,
+  {
+    triggerServerDisconnection,
+    unauthenticate,
+    setUser
+  })(AccountScreen);
