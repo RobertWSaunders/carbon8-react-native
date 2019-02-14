@@ -1,14 +1,49 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, AsyncStorage } from "react-native";
 import { Header } from "react-native-elements";
 import QRCode from "react-native-qrcode-svg";
+import Config from "react-native-config";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import axios from "axios";
 
-import { selectors } from "../../ClientStore";
+import { selectors, actionCreators } from "../../ClientStore";
 
-const { getScanCode } = selectors;
+const { setScanCode } = actionCreators;
+
+const {
+  getScanCode,
+  getAppSessionId,
+  getDispensingWater,
+  getFetchNewScanCodeForSession
+} = selectors;
 
 class ScanModal extends Component {
+
+  async componentDidUpdate(prevProps) {
+    const { fetchNewScanCodeForSession } = this.props;
+
+    if (fetchNewScanCodeForSession && (fetchNewScanCodeForSession !== prevProps.fetchNewScanCodeForSession)) {
+      await this.fetchNewScanCodeForSession();
+    }
+  }
+
+  async fetchNewScanCodeForSession() {
+    try {
+      const accessToken = await AsyncStorage.getItem(Config.APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+
+      const res = await axios.get(`${Config.CARBON8_SERVER_URL}/api/auth/getNewScanCodeForSession`, {
+        headers: {
+          "Authorization": `Bearer ${accessToken}`
+        }
+      });
+
+      const { scanCode } = res.data;
+
+      this.props.setScanCode(scanCode);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   render() {
     const { scanCode } = this.props;
@@ -65,6 +100,23 @@ class ScanModal extends Component {
             size={180}
           />
         </View>
+        {(this.props.dispensingWater) ? (
+          <Text
+            style={{
+              marginTop: 80,
+              marginBottom: 80,
+              paddingRight: 50,
+              paddingLeft: 50,
+              justifyContent: "center",
+              textAlign: "center",
+              fontSize: 15
+            }}
+          >
+            You are currently dispensing water!
+          </Text>
+        ) : (
+          null
+        )}
       </View>
     );
   }
@@ -73,8 +125,11 @@ class ScanModal extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     ...ownProps,
-    scanCode: getScanCode(state)
+    scanCode: getScanCode(state),
+    appSessionId: getAppSessionId(state),
+    dispensingWater: getDispensingWater(state),
+    fetchNewScanCodeForSession: getFetchNewScanCodeForSession(state)
   };
 }
 
-export default connect(mapStateToProps)(ScanModal);
+export default connect(mapStateToProps, { setScanCode })(ScanModal);

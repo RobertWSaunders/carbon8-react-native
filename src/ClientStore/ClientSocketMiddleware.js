@@ -75,19 +75,19 @@ class ClientSocketMiddleware {
   }
 
   handleSocketAction(action) {
+    const socketAction = this.getSocketActionFromReduxAction(action);
+
+    if (socketAction === this.socketDisconnectAction) {
+      return this.socket.disconnect();
+    }
+
     if (!this.socket) {
       this.buffer.push(action);
 
       return this.createSocketConnection();
     }
 
-    const socketAction = this.getSocketActionFromReduxAction(action);
-
-    if (socketAction === this.socketDisconnectAction) {
-      this.socket.disconnect();
-    } else {
-      this.socket.emit(socketAction);
-    }
+    this.socket.emit(socketAction);
   }
 
   socketMiddleware() {

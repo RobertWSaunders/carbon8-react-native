@@ -13,7 +13,8 @@ const initialState = {
 
   serverSocketConnected: false,
 
-  test: ""
+  dispensingWater: false,
+  fetchNewScanCodeForSession: false
 };
 
 export const selectors = {
@@ -26,24 +27,38 @@ export const selectors = {
   getServerSocketConnected: (state) =>
     state[reducerMount].serverSocketConnected,
 
-  getTest: (state) => state[reducerMount].test
+  getAppSessionId: (state) => state[reducerMount].appSessionId,
+
+  getDispensingWater: (state) => state[reducerMount].dispensingWater,
+  getFetchNewScanCodeForSession: (state) => state[reducerMount].fetchNewScanCodeForSession
 };
 
 const handlers = {
-  [actionTypes.MOBILE_TEST]: (state, action) => {
-    const { test } = action.data;
+  [actionTypes.SET_SCAN_CODE]: (state, action) => {
+    const { code } = action.data;
 
     return {
       ...state,
-      test
+      scanCode: code,
+      fetchNewScanCodeForSession: false
     };
   },
-  [actionTypes.SET_USER]: (state, action) => {
-    const { user } = action.data;
-
+  [actionTypes.DISPENSING_WATER_START]: (state, action) => {
     return {
       ...state,
-      user
+      dispensingWater: true
+    };
+  },
+  [actionTypes.DISPENSING_WATER_END]: (state, action) => {
+    return {
+      ...state,
+      dispensingWater: false
+    };
+  },
+  [actionTypes.SCAN_CODE_COMPLETE]: (state, action) => {
+    return {
+      ...state,
+      fetchNewScanCodeForSession: true
     };
   },
   [actionTypes.AUTHENTICATE]: (state, action) => {

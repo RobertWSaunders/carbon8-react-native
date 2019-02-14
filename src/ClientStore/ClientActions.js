@@ -2,7 +2,8 @@ const clientActionTypes = {
   AUTHENTICATE: "@@/client/AUTHENTICATE",
   UNAUTHENTICATE: "@@/client/UNAUTHENTICATE",
 
-  SET_USER: "@@/client/SET_USER"
+  SET_USER: "@@/client/SET_USER",
+  SET_SCAN_CODE: "@@/client/SET_SCAN_CODE"
 };
 
 const serverSocketMiddlewareActionTypes = {
@@ -19,11 +20,15 @@ const serverSocketMiddlewareActionTypes = {
 
   // Events
 
-  MOBILE_TEST: "@@/client/server/socket/MOBILE_TEST"
+  DISPENSING_WATER_START: "@@/client/server/internal/DISPENSING_WATER_START",
+  DISPENSING_WATER_END: "@@/client/server/internal/DISPENSING_WATER_END",
+  SCAN_CODE_COMPLETE: "@@/client/server/internal/SCAN_CODE_COMPLETE"
 };
 
 export const serverSocketEventActionMap = {
-  ["TEST"]: serverSocketMiddlewareActionTypes.MOBILE_TEST
+  ["DISPENSING_WATER_START"]: serverSocketMiddlewareActionTypes.DISPENSING_WATER_START,
+  ["DISPENSING_WATER_END"]: serverSocketMiddlewareActionTypes.DISPENSING_WATER_END,
+  ["SCAN_CODE_COMPLETE"]: serverSocketMiddlewareActionTypes.SCAN_CODE_COMPLETE
 };
 
 export const actionTypes = {
@@ -35,7 +40,8 @@ const clientActionCreators = {
   authenticate: (authInfo) => ({ type: actionTypes.AUTHENTICATE, data: { authInfo }}),
   unauthenticate: () => ({ type: actionTypes.UNAUTHENTICATE }),
 
-  setUser: (user) => ({ type: actionTypes.SET_USER, data: { user } })
+  setUser: (user) => ({ type: actionTypes.SET_USER, data: { user } }),
+  setScanCode: (code) => ({ type: actionTypes.SET_SCAN_CODE, data: { code }})
 };
 
 const invokeServerSocketActionCreators = {
