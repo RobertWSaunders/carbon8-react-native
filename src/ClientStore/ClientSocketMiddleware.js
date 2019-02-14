@@ -14,6 +14,7 @@ class ClientSocketMiddleware {
     this.socketConnectionActionTypes = opts.socketConnectionActionTypes;
     this.socketAuthenticateOnConnect = opts.socketAuthenticateOnConnect;
     this.socketAuthenticateAction = opts.socketAuthenticateAction || false;
+    this.socketDisconnectAction = opts.socketDisconnectAction;
   }
 
   isSocketMiddlewareAction(action) {
@@ -82,7 +83,7 @@ class ClientSocketMiddleware {
 
     const socketAction = this.getSocketActionFromReduxAction(action);
 
-    if (socketAction === "TRIGGER_SERVER_DISCONNECTION") {
+    if (socketAction === this.socketDisconnectAction) {
       this.socket.disconnect();
     } else {
       this.socket.emit(socketAction);

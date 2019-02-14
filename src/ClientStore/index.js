@@ -23,6 +23,7 @@ const serverSocketMiddleware = createSocketMiddleware({
   socketAuthenticateOnConnect: true,
   accessTokenKey: Config.APP_ACCESS_TOKEN_LOCAL_STORAGE_KEY,
   socketAuthenticateAction: "AUTHENTICATE_APP",
+  socketDisconnectAction: "TRIGGER_SERVER_DISCONNECTION",
   storageAccess
 });
 

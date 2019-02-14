@@ -149,7 +149,7 @@ class SignupScreen extends Component {
     const lastName = name.slice(-1).join(" ");
 
     try {
-      const res = await axios.post(`${Config.CARBON8_SERVER_URL}/auth/signup`, {
+      const res = await axios.post(`${Config.CARBON8_SERVER_URL}/api/auth/signup`, {
         firstName,
         lastName,
         email: formEmailAddress,

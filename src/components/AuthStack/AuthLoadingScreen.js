@@ -24,7 +24,7 @@ class AuthLoadingScreen extends Component {
         return this.props.navigation.navigate("Auth");
       }
 
-      const res = await axios.get(`${Config.CARBON8_SERVER_URL}/auth/sessionFromAccessToken`, {
+      const res = await axios.get(`${Config.CARBON8_SERVER_URL}/api/auth/sessionFromAccessToken`, {
         headers: {
           "Authorization": `Bearer ${oldAccessToken}`
         }

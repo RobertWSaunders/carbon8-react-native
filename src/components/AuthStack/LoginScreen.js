@@ -25,7 +25,7 @@ class LoginScreen extends Component {
     return {
       title: "Login",
       header: null
-    }
+    };
   }
 
   constructor(props) {
@@ -92,20 +92,20 @@ class LoginScreen extends Component {
 
     if (formPassword.length === 0) {
       status = false;
-      messages.passwordMsg = "Please enter a password."
+      messages.passwordMsg = "Please enter a password.";
     }
 
     if (formPassword.length !== 0 && formPassword.length < 8) {
       status = false;
-      messages.passwordMsg = "Please enter a valid password (min 8 chars)."
+      messages.passwordMsg = "Please enter a valid password (min 8 chars).";
     }
 
     if (!/^.+@.+$/.test(formEmailAddress)) {
       status = false;
-      messages.emailMsg = "Please enter a valid email."
+      messages.emailMsg = "Please enter a valid email.";
     }
 
-    this.stopValidatingInputs(messages.passwordMsg, messages.emailMsg)
+    this.stopValidatingInputs(messages.passwordMsg, messages.emailMsg);
 
     return status;
   }
@@ -120,7 +120,7 @@ class LoginScreen extends Component {
     const { formEmailAddress, formPassword } = this.state;
 
     try {
-      const res = await axios.post(`${Config.CARBON8_SERVER_URL}/auth/session`, {
+      const res = await axios.post(`${Config.CARBON8_SERVER_URL}/api/auth/session`, {
         email: formEmailAddress,
         password: formPassword
       });
@@ -177,7 +177,7 @@ class LoginScreen extends Component {
           )}
         </Text>
       </View>
-    )
+    );
   }
 
   renderFormInputs() {
@@ -283,7 +283,7 @@ class LoginScreen extends Component {
             borderWidth: 1,
             borderRadius: 5,
             borderColor: "#000",
-            backgroundColor: "#000",
+            backgroundColor: "#000"
           }}
           disabledStyle={{
             backgroundColor: "#000"
@@ -334,7 +334,7 @@ class LoginScreen extends Component {
           }}
           onPress={() => {
             if (!resetButtonDisabled) {
-              this.props.navigation.navigate("Reset")
+              this.props.navigation.navigate("Reset");
             }
           }}
           >
@@ -359,7 +359,7 @@ class LoginScreen extends Component {
         {this.renderButtons()}
         {this.renderResetPasswordText()}
       </KeyboardAvoidingView>
-    )
+    );
   }
 }
 

@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text } from "react-native";
-import Barcode from 'react-native-barcode-builder';
 import { Header } from "react-native-elements";
+import QRCode from "react-native-qrcode-svg";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
@@ -53,15 +53,18 @@ class ScanModal extends Component {
             fontSize: 15
           }}
         >
-          Scan your barcode at any Carbon8 fountain to access sparkling water and log your consumption in the app.
+          Scan your code at any Carbon8 fountain to access sparkling water and log your consumption in the app.
         </Text>
-        <Barcode
-          value={scanCode}
-          format="CODE128"
-          text={scanCode}
-          width={1}
-          background="#FFF"
-        />
+        <View
+          style={{
+            alignItems: "center"
+          }}
+        >
+          <QRCode
+            value={scanCode}
+            size={180}
+          />
+        </View>
       </View>
     );
   }

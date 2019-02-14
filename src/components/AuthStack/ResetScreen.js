@@ -82,7 +82,7 @@ class ResetScreen extends Component {
     const { formEmailAddress } = this.state;
 
     try {
-      const res = await axios.post(`${Config.CARBON8_SERVER_URL}/auth/createResetHash`, {
+      const res = await axios.post(`${Config.CARBON8_SERVER_URL}/api/auth/createResetHash`, {
         email: formEmailAddress
       });
 
